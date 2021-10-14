@@ -25,7 +25,7 @@ class MeterReadingService
     {
         $electricityReadings = $this->electricityReadingRepository->getElectricityReadings($smartMeterId);
         if ($electricityReadings->isEmpty()) {
-            throw new InvalidMeterIdException("No electricity readings available for ".$smartMeterId);
+            throw new InvalidMeterIdException("No electricity readings available for " . $smartMeterId);
         }
         return $electricityReadings;
     }
@@ -39,8 +39,9 @@ class MeterReadingService
         $result = false;
         $this->validateSmartMeterId($smartMeterId);
 
+        $smartIDFromDb = $this->electricityReadingRepository->getSmartMeterId($smartMeterId);
+
         foreach ($readings as $reading) {
-            $smartIDFromDb = $this->electricityReadingRepository->getSmartMeterId($smartMeterId);
 
             if ($smartIDFromDb != null && $smartIDFromDb->id > 0) {
                 $result = $this->insertDataIntoElectricityReadings($reading, $smartIDFromDb->id);
